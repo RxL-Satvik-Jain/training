@@ -1,0 +1,77 @@
+Answer 1 and 2
+
+create table locations
+(location_id int,
+location_name varchar(255),
+PRIMARY KEY (location_id)
+);
+
+
+
+create table department
+(dept_id int,
+department_name varchar(255),
+PRIMARY KEY (dept_id)
+);
+
+
+
+create table employee
+(emp_id int,
+employee_name varchar(255),
+department_id int,
+location_id int ,
+salary int,
+PRIMARY KEY (emp_id),
+FOREIGN KEY (location_id) REFERENCES locations(location_id),
+FOREIGN KEY (department_id) REFERENCES department(dept_id)
+);
+
+Answer3
+
+insert into locations values (1,'location1')
+insert into locations values (2,'location2')
+
+insert into department values (1,'department1')
+insert into department values (2,'department2')
+insert into department values (3,'department3')
+
+insert into employee values (1,'employee1',1,1,20000);
+insert into employee values (2,'employee2',2,2,30000);
+insert into employee values (3,'employee3',3,1,21000);
+insert into employee values (4,'employee4',1,2,22000);
+insert into employee values (5,'employee5',2,1,24000);
+insert into employee values (6,'employee6',3,2,26000);
+insert into employee values (7,'employee7',1,1,28000);
+insert into employee values (8,'employee8',2,2,22000);
+insert into employee values (9,'employee9',3,1,24000);
+insert into employee values (10,'employee10',1,2,25000);
+insert into employee values (11,'employee11',2,1,21000);
+insert into employee values (12,'employee12',3,2,20000);
+insert into employee values (13,'employee13',1,1,27000);
+insert into employee values (14,'employee14',2,2,26000);
+insert into employee values (15,'employee15',3,1,28000);
+insert into employee values (16,'employee16',1,2,22000);
+insert into employee values (17,'employee17',2,1,25000);
+insert into employee values (18,'employee18',3,2,30000);
+insert into employee values (19,'employee19',1,1,35000);
+insert into employee values (20,'employee20',2,2,45000);
+
+Answer 4
+
+a)select e.employee_name,d.department_name from employee e join department d on e.department_id=d.dept_id;
+
+b)select e.employee_name,d.department_name,l.location_name from employee e join department d on e.department_id=d.dept_id  join locations l on e.location_id=l.location_id;
+
+c)select max(salary), d.department_name from employee e join department  d on e.department_id =d.dept_id group by department_name;
+
+d)select o, department_name from (select max(salary) o,department_id from (employee join (select max(salary) s,department_id m from employee e group by department_id) t on employee.department_id = t.m) where salary < s group by department_id ) join department on department.dept_id = department_id;
+
+e)select avg(e.salary),d.department_name,l.location_name from employee e join department d on e.department_id = d.dept_id join locations l on e.location_id = l.location_id group by d.department_name,l.location_name;
+
+Additional query
+ 
+Answer 1 Select count(employee_name),department_name from employee join department on employee.department_id=department.dept_id group by department_name;
+
+Answer 2 select count(distinct(employee.department_id)),locations.location_name from (locations join employee on locations.location_id = employee.location_id join department on employee.department_id = department.dept_id) group by locations.location_name having count(distinct(employee.department_id)) = 2;
+
